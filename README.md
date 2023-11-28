@@ -1,2 +1,2 @@
-# advent_code_2023
-Advent of Code 2023 (https://adventofcode.com/2023)
+# Advent Of Code 2023
+This is a repository for `Advent Of Code's` 2023 Edition
