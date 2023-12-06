@@ -63,3 +63,90 @@ def word_to_value(data: str) -> int:
             result.append(int(items))
 
     return result[0] * 10 + result[-1]
+
+
+def extract_round_results(data: list) -> dict:
+    '''
+    AoC Challenge Day#2
+    --------------------------------
+    Function to extract into a dictionary the results of each round
+    '''
+
+    results_by_game = {}
+    for game in data:
+        game_id, game_rounds = game.split(":")
+        # Convert game ID to integer value
+        game_id = int(game_id.split(" ")[1])
+
+        # Build game results list
+        game_rounds = game_rounds.split(";")
+        # Round by round
+        results_by_round = []
+        for game_round in game_rounds:
+            game_results = game_round.split(',')
+            # Result by result
+            results = {}
+            for game_result in game_results:
+                # Remove leading and trailing whitespaces
+                game_result = game_result.strip()
+                number, color = game_result.split(" ")
+                results[color] = int(number)
+            results_by_round.append(results)
+        results_by_game[game_id] = results_by_round
+    return results_by_game
+
+
+def check_game_results(results: dict) -> list:
+    '''
+    AoC Day#2
+    ---------------
+    Check game results dictionary
+    '''
+
+    threshold = {
+        "red": 12,
+        "green": 13,
+        "blue": 14
+    }
+
+    valid_games = []
+    valid_game = True
+    for game in results:
+        for result in results[game]:
+            for threshold_items in threshold.items():
+                if threshold_items[0] in result.keys():
+                    if result[threshold_items[0]] > threshold_items[1]:
+                        valid_game = False
+        if valid_game:
+            valid_games.append(game)
+        valid_game = True
+    return valid_games
+
+
+def check_minimum_cubes(results: dict) -> int:
+    '''
+    AoC Day#2
+    -------------------
+    Return the power of each game
+    '''
+
+    max_value = {}
+    colors = ["red", "green", "blue"]
+    power_games = []
+    for game in results:
+        round_id = 0
+        max_value = {}
+        for result in results[game]:
+            round_id += 1
+            for color in colors:
+                if color not in max_value:
+                    max_value[color] = 0
+                if color in result.keys():
+                    if result[color] > max_value[color]:
+                        max_value[color] = result[color]
+        power_game = 1
+        for value in max_value.items():
+            power_game = power_game * value[1]
+        power_games.append(power_game)
+
+    return sum(power_games)
