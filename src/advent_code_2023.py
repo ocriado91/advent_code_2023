@@ -9,7 +9,8 @@ from tools.tools import load_data,\
                         word_to_value,\
                         extract_round_results,\
                         check_game_results,\
-                        check_minimum_cubes
+                        check_minimum_cubes,\
+                        adjacent_numbers
 
 
 def solution_day_one_1_part_a(data: list) -> int:
@@ -54,6 +55,15 @@ def solution_day_two_part_b(data: list) -> int:
     return check_minimum_cubes(results)
 
 
+def solution_day_three_part_a(data: list) -> int:
+    '''
+    Solution of the AoC Day#3 (Part A)
+    '''
+
+    results = adjacent_numbers(data)
+    return sum(results)
+
+
 if __name__ == '__main__':  # pragma: no cover
     # Day 1
     day_one_data = load_data("data/puzzle_input_day_one.dat")
@@ -64,3 +74,7 @@ if __name__ == '__main__':  # pragma: no cover
     day_two_data = load_data("data/puzzle_input_day_two.dat")
     print(f"Day two (A) = {solution_day_two_part_a(day_two_data)}")
     print(f"Day two (B) = {solution_day_two_part_b(day_two_data)}")
+
+    # Day 3
+    day_three_data = load_data("data/puzzle_input_day_three.dat")
+    print(f"Day three (A) = {solution_day_three_part_a(day_three_data)}")

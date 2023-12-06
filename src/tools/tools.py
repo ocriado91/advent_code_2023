@@ -110,8 +110,8 @@ def check_game_results(results: dict) -> list:
     }
 
     valid_games = []
-    valid_game = True
     for game in results:
+        valid_game = True
         for result in results[game]:
             for threshold_items in threshold.items():
                 if threshold_items[0] in result.keys():
@@ -150,3 +150,36 @@ def check_minimum_cubes(results: dict) -> int:
         power_games.append(power_game)
 
     return sum(power_games)
+
+
+def adjacent_numbers(data: list) -> list:
+    '''
+    AoC - Day#3
+    Compute adjacent numbers to a symbol
+    '''
+
+    valid_numbers = []
+    number_pattern = r"\d+"
+    symbol_pattern = r"[^a-zA-Z0-9.]"
+    row = 0
+    for line in data:
+        start = -1
+        number_matches = re.findall(number_pattern, line)
+        for number in number_matches:
+            start = line.index(number, start + 1)
+            end = start + len(number)
+            if start == 0:
+                if row == 0:
+                    neighbors = [x[start:end+1] for x in data[row:row+2]]
+                else:
+                    neighbors = [x[start:end+1] for x in data[row-1:row+2]]
+            else:
+                if row == 0:
+                    neighbors = [x[start-1:end+1] for x in data[row:row+2]]
+                else:
+                    neighbors = [x[start-1:end+1] for x in data[row-1:row+2]]
+            if any(re.search(symbol_pattern, x) for x in neighbors):
+                valid_numbers.append(int(number))
+        row += 1
+
+    return valid_numbers
