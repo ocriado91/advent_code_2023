@@ -16,7 +16,8 @@ from advent_code_2023 import load_data,\
 from tools.tools import extract_round_results,\
                         check_game_results,\
                         check_minimum_cubes,\
-                        adjacent_numbers
+                        adjacent_numbers,\
+                        compute_neighbors
 
 
 def test_load_data():
@@ -151,6 +152,32 @@ def test_solution_day_one_part_b():
     data = load_data("test/data/puzzle_test2.dat")
     solution = solution_day_one_1_part_b(data)
     assert solution == 281
+
+
+def test_compute_neighbors():
+    '''
+    Check the computation of neighbors
+    within the source matrix according
+    with item indexes
+    '''
+
+    source_matrix = [
+        [".", ".", ".", "+", ".", ".", "$", "*", ".", ".", "."],
+        ["@", ".", ".", ".", "%", ".", ".", "1", "4", "7", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]
+    ]
+
+    expected_neighbor = [
+        ["$", "*", ".", ".", "."],
+        [".", "1", "4", "7", "."],
+        [".", ".", ".", ".", "."],
+    ]
+
+    neighbor = compute_neighbors(source_matrix,
+                                 start=7,
+                                 end=9,
+                                 row=1)
+    assert expected_neighbor == neighbor
 
 
 def test_check_number_position():

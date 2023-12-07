@@ -152,6 +152,60 @@ def check_minimum_cubes(results: dict) -> int:
     return sum(power_games)
 
 
+def compute_neighbors(data: list,
+                      start: int,
+                      end: int,
+                      row: int) -> list:
+    '''
+    Compute the neighborhood of an item within
+    a matrix according with its horizontal and
+    vertical indexes.
+
+    Parameters:
+        - data: Source matrix
+        - start: horizontat begin index of item
+        - end: horizontal end index of item
+        - row: row number of index within the matrix
+
+    Example: Neighborhood (/) of number 147
+             within the matrix (|)
+
+    -------------------------
+    |.|.|.|+|.|./$/*/./././.|
+    -------------------------
+    |@|.|.|.|%|././1/4/7/./.|
+    -------------------------
+    |.|.|.|.|.|././././././.|
+    -------------------------
+
+        Params: start = 7; end = 9; row = 1
+
+        Neighbors =
+            -------------
+            /$/*/./././.|
+            -------------
+            /./1/4/7/./.|
+            -------------
+            /./././././.|
+
+    '''
+
+    if start == 0:
+        if row == 0:
+            neighbors = [x[start:end+2] for x in data[row:row+2]]
+        else:
+            neighbors = [x[start:end+2] for x in data[row-1:row+2]]
+    else:
+        if row == 0:
+            neighbors = [x[start-1:end+2] for x in data[row:row+2]]
+        else:
+            neighbors = [x[start-1:end+2] for x in data[row-1:row+2]]
+            print(start-1)
+            print(end+1)
+
+    return neighbors
+
+
 def adjacent_numbers(data: list) -> list:
     '''
     AoC - Day#3
@@ -168,16 +222,10 @@ def adjacent_numbers(data: list) -> list:
         for number in number_matches:
             start = line.index(number, start + 1)
             end = start + len(number)
-            if start == 0:
-                if row == 0:
-                    neighbors = [x[start:end+1] for x in data[row:row+2]]
-                else:
-                    neighbors = [x[start:end+1] for x in data[row-1:row+2]]
-            else:
-                if row == 0:
-                    neighbors = [x[start-1:end+1] for x in data[row:row+2]]
-                else:
-                    neighbors = [x[start-1:end+1] for x in data[row-1:row+2]]
+            neighbors = compute_neighbors(data,
+                                          start,
+                                          end,
+                                          row)
             if any(re.search(symbol_pattern, x) for x in neighbors):
                 valid_numbers.append(int(number))
         row += 1
