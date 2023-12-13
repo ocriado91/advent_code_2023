@@ -10,11 +10,16 @@ from advent_code_2023 import load_data,\
                              solution_day_one_1_part_a,\
                              solution_day_one_1_part_b,\
                              solution_day_two_part_a,\
-                             solution_day_two_part_b
+                             solution_day_two_part_b,\
+                             solution_day_three_part_a,\
+                             solution_day_three_part_b
 
 from tools.tools import extract_round_results,\
                         check_game_results,\
-                        check_minimum_cubes
+                        check_minimum_cubes,\
+                        adjacent_numbers,\
+                        compute_neighbors,\
+                        check_gears
 
 
 def test_load_data():
@@ -149,3 +154,104 @@ def test_solution_day_one_part_b():
     data = load_data("test/data/puzzle_test2.dat")
     solution = solution_day_one_1_part_b(data)
     assert solution == 281
+
+
+def test_compute_neighbors():
+    '''
+    Check the computation of neighbors
+    within the source matrix according
+    with item indexes
+    '''
+
+    source_matrix = [
+        [".", ".", ".", "+", ".", ".", "$", "*", ".", ".", "."],
+        ["@", ".", ".", ".", "%", ".", ".", "1", "4", "7", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]
+    ]
+
+    expected_neighbor = [
+        ["$", "*", ".", ".", "."],
+        [".", "1", "4", "7", "."],
+        [".", ".", ".", ".", "."],
+    ]
+
+    neighbor = compute_neighbors(source_matrix,
+                                 start=7,
+                                 end=9,
+                                 row=1)
+    assert expected_neighbor == neighbor
+
+
+def test_check_number_position():
+    '''
+    AoC Day#3 - Check start and end
+    positions into a string
+    '''
+
+    data = load_data("test/data/day3_test.dat")
+    valid_numbers = adjacent_numbers(data)
+    assert valid_numbers[0] == 467
+    assert valid_numbers[1] == 35
+
+
+def test_solution_day_three_part_a():
+    '''
+    AoC Day#3 - Test the expected solution of AoC
+    challenge
+    '''
+
+    data = load_data("test/data/day3_test.dat")
+    result = solution_day_three_part_a(data)
+    assert result == 4361
+
+
+def test_solution_day_three_part_b():
+    '''
+    AoC Day#3 - Test the expected solution of AoC
+    challenge
+    '''
+
+    data = load_data("test/data/day3_test.dat")
+    result = solution_day_three_part_b(data)
+    assert result == 467835
+
+
+def test_check_gears():
+    '''
+    AoC Day#3 - Test the gears check function
+    according with test data
+    '''
+
+    expected_gears = [16345, 451490]
+    expected_sum = sum(expected_gears)
+    data = load_data("test/data/day3_test.dat")
+    gears = check_gears(data)
+    assert expected_gears == gears
+    assert expected_sum == sum(gears)
+
+
+def test_check_gears_duplicates_line():
+    '''
+    AoC Day#3 - Check detection of gears
+    into a line with multiple gears
+    candidates
+    '''
+
+    expected_gears = [16345, 72162, 451490]
+    expected_sum = sum(expected_gears)
+    data = load_data("test/data/day3_test_custom.dat")
+    gears = check_gears(data)
+    assert expected_gears == gears
+    assert expected_sum == sum(gears)
+
+
+def test_check_gears_single_digits():
+    '''
+    AoC Day#3 - Check detection of gears into single
+    digit numbers
+    '''
+
+    expected_sum = 3366664
+    data = load_data("test/data/day3_test_custom2.dat")
+    gears = check_gears(data)
+    assert expected_sum == sum(gears)
