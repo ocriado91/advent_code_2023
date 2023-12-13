@@ -10,7 +10,8 @@ from tools.tools import load_data,\
                         extract_round_results,\
                         check_game_results,\
                         check_minimum_cubes,\
-                        adjacent_numbers
+                        adjacent_numbers,\
+                        check_gears
 
 
 def solution_day_one_1_part_a(data: list) -> int:
@@ -64,6 +65,16 @@ def solution_day_three_part_a(data: list) -> int:
     return sum(results)
 
 
+def solution_day_three_part_b(data: list) -> int:
+    '''
+    Solution of the AoC Day#3 (Part B)
+    '''
+
+    results = []
+    results = check_gears(data)
+    return sum(results)
+
+
 if __name__ == '__main__':  # pragma: no cover
     # Day 1
     day_one_data = load_data("data/puzzle_input_day_one.dat")
@@ -78,3 +89,4 @@ if __name__ == '__main__':  # pragma: no cover
     # Day 3
     day_three_data = load_data("data/puzzle_input_day_three.dat")
     print(f"Day three (A) = {solution_day_three_part_a(day_three_data)}")
+    print(f"Day three (B) = {solution_day_three_part_b(day_three_data)}")

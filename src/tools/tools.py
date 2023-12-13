@@ -190,6 +190,7 @@ def compute_neighbors(data: list,
 
     '''
 
+    neighbors = []
     if start == 0:
         if row == 0:
             neighbors = [x[start:end+2] for x in data[row:row+2]]
@@ -200,8 +201,6 @@ def compute_neighbors(data: list,
             neighbors = [x[start-1:end+2] for x in data[row:row+2]]
         else:
             neighbors = [x[start-1:end+2] for x in data[row-1:row+2]]
-            print(start-1)
-            print(end+1)
 
     return neighbors
 
@@ -231,3 +230,59 @@ def adjacent_numbers(data: list) -> list:
         row += 1
 
     return valid_numbers
+
+
+def check_gears(data: list) -> list:
+    '''
+    Extract the gears (= any "*" symbol that is adjacent to
+    exactly two part numbers) and computes their gear ratio
+    '''
+
+    candidate_gears = {}
+    gear_ratios = []
+    for row, line in enumerate(data):
+        end = 0
+        # Detect each number into incoming data to compute
+        # its neighbor
+        number_matches = re.findall(r"\d+", line)
+        for number in number_matches:
+            start = line.index(number, end)
+            end = start + len(number) - 1
+            neighbors = compute_neighbors(data,
+                                          start,
+                                          end,
+                                          row)
+
+            # Check if gear symbol (*) is within the number neighbor
+            if any(x for x in neighbors if "*" in x):
+
+                # Compute the X coordinate within the neighbor and extract its
+                # global X coordinate according to current start variable
+                x_position = [x.index("*") for x in neighbors
+                              if "*" in x][0] + start
+                if start != 0:
+                    x_position -= 1
+
+                # Compute the Y coordinate within the neighbor and extract its
+                # global Y coordinate according with current number position
+                # within the neighbor and current row
+                gear_y_position = [idx for idx, x in enumerate(neighbors)
+                                   if "*" in x][0]
+                gear_number_position = [idx for idx, x in enumerate(neighbors)
+                                        if number in x][0]
+                y_position = row + gear_y_position - gear_number_position
+
+                # Save the X,Y coordinates
+                gear_position = (x_position, y_position)
+
+                # Check if current gear position have been previously stored
+                if gear_position in candidate_gears:
+                    # Detected gear position, compute the ratio between
+                    # previous number and current number
+                    gear_ratios.append(int(number) *
+                                       candidate_gears[gear_position])
+                else:
+                    # Stored gear position into candidates
+                    candidate_gears[gear_position] = int(number)
+        row += 1
+    return gear_ratios
