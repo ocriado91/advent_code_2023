@@ -286,3 +286,35 @@ def check_gears(data: list) -> list:
                     candidate_gears[gear_position] = int(number)
         row += 1
     return gear_ratios
+
+
+def extract_scratchcard_points(data: list) -> int:
+    '''
+    Compute the points of each scratchcard
+    '''
+
+    total_points = 0
+    for line in data:
+        # Extract the scratchcard numbers
+        numbers = line.split(':')[1]
+
+        # Split winning numbers and my numbers
+        winning_numbers, my_numbers = numbers.split('|')
+
+        # Convert string of numbers into list of numbers
+        winning_numbers = winning_numbers.split()
+        my_numbers = my_numbers.split()
+
+        # Compute the intersection between two lists
+        my_winning_numbers = list(set(winning_numbers) &
+                                  set(my_numbers))
+
+        # Each winning number duplicates the points
+        points = 0
+        if my_winning_numbers:
+            points = 2 ** (len(my_winning_numbers) - 1)
+
+        # Add scratchcard points to total
+        total_points += points
+
+    return total_points

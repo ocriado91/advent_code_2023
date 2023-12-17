@@ -12,14 +12,16 @@ from advent_code_2023 import load_data,\
                              solution_day_two_part_a,\
                              solution_day_two_part_b,\
                              solution_day_three_part_a,\
-                             solution_day_three_part_b
+                             solution_day_three_part_b,\
+                             solution_day_four_part_a
 
 from tools.tools import extract_round_results,\
                         check_game_results,\
                         check_minimum_cubes,\
                         adjacent_numbers,\
                         compute_neighbors,\
-                        check_gears
+                        check_gears,\
+                        extract_scratchcard_points
 
 
 def test_load_data():
@@ -255,3 +257,40 @@ def test_check_gears_single_digits():
     data = load_data("test/data/day3_test_custom2.dat")
     gears = check_gears(data)
     assert expected_sum == sum(gears)
+
+
+def test_scratchcard():
+    '''
+    AoC Day#4 - Check scratchcard points of test data
+    '''
+
+    expected_scratchcard_points = 13
+    data = load_data("test/data/day4_test_scratchcard.dat")
+    scratchcard_points = extract_scratchcard_points(data)
+    assert expected_scratchcard_points == scratchcard_points
+
+
+# Integration tests
+
+def test_example_solution_day_four_part_a():
+    '''
+    Check expected result according of AoC Day#4 - Part A
+    according to example input
+    '''
+
+    expected_points = 13
+    data = load_data("test/data/day4_test_scratchcard.dat")
+    points = solution_day_four_part_a(data)
+    assert expected_points == points
+
+
+def test_solution_day_four_part_a():
+    '''
+    Check expected result according of AoC Day#4 - Part A
+    according to example input
+    '''
+
+    expected_points = 24175
+    data = load_data("data/puzzle_input_day_four.dat")
+    points = solution_day_four_part_a(data)
+    assert expected_points == points

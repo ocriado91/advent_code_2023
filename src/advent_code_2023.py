@@ -11,7 +11,8 @@ from tools.tools import load_data,\
                         check_game_results,\
                         check_minimum_cubes,\
                         adjacent_numbers,\
-                        check_gears
+                        check_gears,\
+                        extract_scratchcard_points
 
 
 def solution_day_one_1_part_a(data: list) -> int:
@@ -70,9 +71,16 @@ def solution_day_three_part_b(data: list) -> int:
     Solution of the AoC Day#3 (Part B)
     '''
 
-    results = []
     results = check_gears(data)
     return sum(results)
+
+
+def solution_day_four_part_a(data: list) -> int:
+    '''
+    Solution of the AoC Day#4 (Part A)
+    '''
+
+    return extract_scratchcard_points(data)
 
 
 if __name__ == '__main__':  # pragma: no cover
@@ -90,3 +98,7 @@ if __name__ == '__main__':  # pragma: no cover
     day_three_data = load_data("data/puzzle_input_day_three.dat")
     print(f"Day three (A) = {solution_day_three_part_a(day_three_data)}")
     print(f"Day three (B) = {solution_day_three_part_b(day_three_data)}")
+
+    # Day 4
+    day_four_data = load_data("data/puzzle_input_day_four.dat")
+    print(f"Day four (A) = {solution_day_four_part_a(day_four_data)}")
